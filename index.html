@@ -1,0 +1,756 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The Volunteer Room (sample data)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Public+Sans:wght@400;500;600;700&display=swap">
+<style>
+  :root {
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    --bg: #fffaf9; --surface: #ffffff; --ink: #253746; --muted: #52636b; --line: #eadbdd;
+    --accent: #d92f43; --accent-ink: #c21f30; --tint: #fdebed; --dot: #e6e9ea;
+    --zone-neutral: #f7f8f8; --zone-edge: #e1e6e8; --on-bg: #253746; --on-ink: #ffffff;
+    --pill-on: rgba(255,255,255,0.2); --shadow: rgba(37,55,70,0.1); --shadow-strong: rgba(37,55,70,0.2);
+    --close-bg: #f4f5f6; --ring-gap: #ffffff; --ring: #253746;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #fffaf9; --surface: #ffffff; --ink: #253746; --muted: #52636b; --line: #eadbdd;
+      --accent: #d92f43; --accent-ink: #c21f30; --tint: #fdebed; --dot: #e6e9ea;
+      --zone-neutral: #f7f8f8; --zone-edge: #e1e6e8; --on-bg: #253746; --on-ink: #ffffff;
+      --pill-on: rgba(255,255,255,0.2); --shadow: rgba(37,55,70,0.1); --shadow-strong: rgba(37,55,70,0.2);
+      --close-bg: #f4f5f6; --ring-gap: #ffffff; --ring: #253746;
+      color-scheme: light;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #fffaf9; --surface: #ffffff; --ink: #253746; --muted: #52636b; --line: #eadbdd;
+    --accent: #d92f43; --accent-ink: #c21f30; --tint: #fdebed; --dot: #e6e9ea;
+    --zone-neutral: #f7f8f8; --zone-edge: #e1e6e8; --on-bg: #253746; --on-ink: #ffffff;
+    --pill-on: rgba(255,255,255,0.2); --shadow: rgba(37,55,70,0.1); --shadow-strong: rgba(37,55,70,0.2);
+    --close-bg: #f4f5f6; --ring-gap: #ffffff; --ring: #253746;
+    color-scheme: light;
+  }
+  html { scroll-padding-top: env(safe-area-inset-top, 0px); }
+  body { margin: 0; background: var(--bg); color: var(--ink); font-family: 'Public Sans', system-ui, sans-serif; }
+  button { font-family: inherit; cursor: pointer; }
+  a { color: var(--accent-ink); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  :focus-visible { outline: 3px solid var(--ring); outline-offset: 3px; }
+
+  .pad { padding-left: clamp(20px, 5vw, 72px); padding-right: clamp(20px, 5vw, 72px); }
+  .nav { display: flex; align-items: center; justify-content: space-between; padding-top: 26px; padding-bottom: 26px; }
+  .brand { font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 17px; }
+  .muted { color: var(--muted); }
+  .intro { display: flex; flex-wrap: wrap; gap: 20px 40px; align-items: flex-start; justify-content: space-between; padding-top: 8px; padding-bottom: 28px; }
+  .intro-text { flex: 1 1 520px; max-width: 900px; }
+  h1 { font-family: 'Poppins', sans-serif; font-weight: 800; font-size: 32px; letter-spacing: -0.01em; margin: 0 0 8px; }
+  .intro p { font-size: 15px; line-height: 1.55; color: var(--muted); margin: 0; }
+  .stat { display: flex; align-items: center; gap: 16px; background: var(--surface); border-radius: 20px; padding: 16px 26px; box-shadow: 0 2px 8px var(--shadow); }
+  .stat-n { font-family: 'Poppins', sans-serif; font-weight: 800; font-size: 48px; line-height: 1; color: var(--accent); }
+  .stat-l { font-size: 14px; line-height: 1.35; color: var(--muted); font-weight: 600; }
+
+  .filters { display: flex; flex-direction: column; gap: 22px; padding-bottom: 28px; }
+  .set-label { font-size: 13px; font-weight: 700; color: var(--muted); margin-bottom: 10px; }
+  .set-hint { font-weight: 500; }
+  .row { display: flex; flex-wrap: wrap; gap: 8px; }
+  .btn, .chip { background: var(--surface); color: var(--muted); border: 1px solid var(--line); border-radius: 999px; min-height: 44px; font-size: 14px; font-weight: 600; transition: background 0.15s, color 0.15s; }
+  .btn { padding: 0 20px; }
+  .chip { display: inline-flex; align-items: center; gap: 10px; padding: 0 8px 0 18px; color: var(--ink); }
+  .chip-n { background: var(--tint); color: var(--ink); font-size: 12px; font-weight: 700; border-radius: 999px; min-width: 26px; height: 26px; display: inline-flex; align-items: center; justify-content: center; padding: 0 6px; box-sizing: border-box; }
+  .btn[aria-pressed="true"], .chip[aria-pressed="true"] { background: var(--on-bg); color: var(--on-ink); border-color: var(--on-bg); }
+  .chip[aria-pressed="true"] .chip-n { background: var(--pill-on); color: var(--on-ink); }
+
+  .status { padding-bottom: 16px; min-height: 52px; max-width: 1000px; }
+  .status-t { font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 18px; }
+  .status-s { font-size: 14px; line-height: 1.5; color: var(--muted); margin-top: 4px; }
+  .infos { display: flex; flex-wrap: wrap; gap: 16px; padding-bottom: 20px; }
+  .info { flex: 1 1 380px; max-width: 640px; box-sizing: border-box; background: var(--surface); border-radius: 18px; padding: 18px 22px; box-shadow: 0 2px 8px var(--shadow); animation: rise 0.35s ease-out both; }
+  .info-k { font-size: 13px; font-weight: 700; color: var(--muted); margin-bottom: 6px; }
+  .info-t { font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 16px; line-height: 1.35; }
+  .info p { margin: 8px 0 0; font-size: 14px; line-height: 1.55; }
+  .info p.note { font-size: 13px; line-height: 1.5; color: var(--muted); }
+
+  .roomwrap { padding-bottom: 28px; }
+  .roomfit { overflow: hidden; border-radius: 28px; box-shadow: 0 2px 8px var(--shadow); }
+  .stage { position: relative; width: 1296px; height: 660px; background-color: var(--surface); background-image: radial-gradient(var(--dot) 1.2px, transparent 1.2px); background-size: 26px 26px; transform-origin: 0 0; isolation: isolate; z-index: 0; overflow: hidden; }
+  .zone { position: absolute; box-sizing: border-box; border: 1.5px dashed; border-radius: 22px; transition: left 0.9s ease, top 0.9s ease, width 0.9s ease, height 0.9s ease, background-color 0.6s ease, border-color 0.6s ease; animation: zoneIn 0.5s ease-out both; }
+  .zone-label { padding: 14px 18px; font-family: 'Poppins', sans-serif; font-size: 14px; font-weight: 700; }
+  .zone-count { color: var(--muted); font-weight: 600; }
+
+  .person { position: absolute; width: 84px; display: flex; flex-direction: column; align-items: center; }
+  .shadow { position: absolute; left: 50%; top: 63px; width: 34px; height: 8px; margin-left: -17px; border-radius: 50%; background: rgba(0,0,0,0.2); }
+  .av { position: relative; border: none; background: transparent; padding: 0; width: 44px; height: 70px; border-radius: 16px; transition: transform 0.15s; }
+  .av:hover { transform: scale(1.1); }
+  .walker { display: block; width: 40px; height: 70px; margin: 0 auto; transform-origin: 50% 100%; transition: opacity 0.5s ease, filter 0.5s ease; }
+  .name { width: 80px; margin-top: 5px; font-size: 10.5px; line-height: 1.25; color: var(--muted); text-align: center; }
+  .limb { transform-box: fill-box; transform-origin: 50% 0%; }
+  .raiser, .waver { transform-box: view-box; transform-origin: 33.25px 20.5px; }
+  .raiser { transition: transform 0.35s ease-out; }
+  .jumper { display: block; transform-origin: 50% 100%; }
+
+  /* hover / focus: raise a hand and wave */
+  .av:hover .raiser, .av:focus-visible .raiser, .person.clicked .raiser { transform: rotate(-158deg); }
+  .av:hover .waver, .av:focus-visible .waver, .person.clicked .waver { animation: wiggle 0.8s 0.3s ease-in-out 1; }
+  .person:hover .name { color: var(--ink); font-weight: 600; }
+
+  /* click: hop, wave and a ripple on the floor */
+  .person.clicked .jumper { animation: hop 0.7s cubic-bezier(0.3, 0.7, 0.4, 1); }
+  .ripple { position: absolute; left: 50%; top: 63px; width: 34px; height: 8px; margin-left: -17px; border-radius: 50%; border: 2px solid var(--accent); opacity: 0; pointer-events: none; }
+  .person.clicked .ripple { animation: ripple 0.8s ease-out; }
+
+  /* two people chatting */
+  .bubble { position: absolute; top: -16px; left: 50%; margin-left: -17px; width: 34px; height: 20px; border-radius: 12px; background: var(--surface); box-shadow: 0 1px 5px var(--shadow-strong); display: none; align-items: center; justify-content: center; gap: 3px; pointer-events: none; }
+  .bubble::after { content: ''; position: absolute; bottom: -4px; left: 13px; width: 8px; height: 8px; background: var(--surface); transform: rotate(45deg); border-radius: 0 0 2px 0; }
+  .bubble i { width: 4px; height: 4px; border-radius: 50%; background: var(--muted); animation: dotBounce 0.9s ease-in-out infinite; }
+  .bubble i:nth-child(2) { animation-delay: 0.15s; }
+  .bubble i:nth-child(3) { animation-delay: 0.3s; }
+  .person.talking .bubble { display: flex; animation: say 2.4s ease-in-out infinite; }
+  .person.talking.b2 .bubble { animation-delay: -1.2s; }
+
+  @keyframes wiggle { 0%, 100% { transform: rotate(0deg); } 25% { transform: rotate(-9deg); } 50% { transform: rotate(5deg); } 75% { transform: rotate(-9deg); } }
+  @keyframes hop { 0% { transform: translateY(0) scale(1, 1); } 18% { transform: translateY(0) scale(1.1, 0.9); } 50% { transform: translateY(-16px) scale(0.96, 1.05); } 78% { transform: translateY(0) scale(1.06, 0.94); } 100% { transform: translateY(0) scale(1, 1); } }
+  @keyframes ripple { from { opacity: 0.85; transform: scale(0.6); } to { opacity: 0; transform: scale(3.4); } }
+  @keyframes say { 0% { opacity: 0; transform: translateY(4px) scale(0.8); } 8%, 42% { opacity: 1; transform: translateY(0) scale(1); } 50%, 100% { opacity: 0; transform: translateY(4px) scale(0.8); } }
+  @keyframes dotBounce { 0%, 60%, 100% { transform: translateY(0); opacity: 0.5; } 30% { transform: translateY(-3px); opacity: 1; } }
+  @keyframes talk { 0% { transform: rotate(-20deg); } 10% { transform: rotate(-45deg); } 20% { transform: rotate(-25deg); } 30% { transform: rotate(-45deg); } 42% { transform: rotate(-20deg); } 50%, 100% { transform: rotate(0deg); } }
+
+  @keyframes stepBobA { 0%,100% { transform: translateY(0); } 25% { transform: translateY(-3px); } 50% { transform: translateY(0); } 75% { transform: translateY(-3px); } }
+  @keyframes stepBobB { 0%,100% { transform: translateY(0); } 25% { transform: translateY(-3px); } 50% { transform: translateY(0); } 75% { transform: translateY(-3px); } }
+  @keyframes swingA  { 0%,100% { transform: rotate(0deg); } 25% { transform: rotate(24deg); }  75% { transform: rotate(-24deg); } }
+  @keyframes swingOA { 0%,100% { transform: rotate(0deg); } 25% { transform: rotate(-24deg); } 75% { transform: rotate(24deg); } }
+  @keyframes swingB  { 0%,100% { transform: rotate(0deg); } 25% { transform: rotate(24deg); }  75% { transform: rotate(-24deg); } }
+  @keyframes swingOB { 0%,100% { transform: rotate(0deg); } 25% { transform: rotate(-24deg); } 75% { transform: rotate(24deg); } }
+  /* arms swing less than legs */
+  @keyframes armA  { 0%,100% { transform: rotate(0deg); } 25% { transform: rotate(10deg); }  75% { transform: rotate(-10deg); } }
+  @keyframes armOA { 0%,100% { transform: rotate(0deg); } 25% { transform: rotate(-10deg); } 75% { transform: rotate(10deg); } }
+  @keyframes armB  { 0%,100% { transform: rotate(0deg); } 25% { transform: rotate(10deg); }  75% { transform: rotate(-10deg); } }
+  @keyframes armOB { 0%,100% { transform: rotate(0deg); } 25% { transform: rotate(-10deg); } 75% { transform: rotate(10deg); } }
+  @keyframes zoneIn { from { opacity: 0; transform: scale(0.96); } to { opacity: 1; transform: scale(1); } }
+  @keyframes rise { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+
+  .detail-wrap { position: sticky; bottom: calc(16px + env(safe-area-inset-bottom, 0px)); z-index: 1000; }
+  .detail { position: relative; background: var(--surface); border-radius: 22px; padding: 26px 64px 26px 28px; box-shadow: 0 8px 28px var(--shadow-strong); display: flex; flex-wrap: wrap; gap: 24px 32px; align-items: flex-start; margin-bottom: 32px; animation: rise 0.35s ease-out both; }
+  .close { position: absolute; top: 12px; right: 12px; background: var(--close-bg); color: var(--muted); border: none; border-radius: 999px; width: 44px; height: 44px; font-size: 20px; line-height: 1; }
+  .who { display: flex; align-items: center; gap: 14px; flex: 0 0 240px; }
+  .who-n { font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 18px; }
+  .who-m { font-size: 12.5px; color: var(--muted); margin-top: 3px; line-height: 1.4; }
+  .who-j { font-size: 12.5px; margin-top: 8px; line-height: 1.4; }
+  .quote { flex: 1 1 280px; background: var(--tint); border-radius: 16px 16px 16px 4px; padding: 18px 22px; }
+  .quote p { font-family: 'Poppins', sans-serif; font-weight: 600; font-size: 15px; line-height: 1.5; margin: 0; }
+  .opps { flex: 1 1 300px; }
+  .opps-h { font-size: 13px; font-weight: 700; color: var(--muted); margin-bottom: 8px; }
+  .opp { display: flex; gap: 10px; align-items: flex-start; border-radius: 10px; padding: 6px 10px; font-size: 13.5px; line-height: 1.45; }
+  .opp.hit { background: var(--tint); font-weight: 600; }
+  .opp i { width: 6px; height: 6px; border-radius: 999px; background: var(--muted); flex-shrink: 0; margin-top: 7px; }
+  .opp.hit i { background: var(--accent); }
+  .snap { display: inline-block; margin: 12px 0 0 10px; font-size: 13px; font-weight: 600; }
+
+  .pills { display: flex; flex-wrap: wrap; gap: 6px; }
+  .pill { font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 999px; background: var(--close-bg); color: var(--muted); }
+  .pill.hit { background: var(--on-bg); color: var(--on-ink); }
+
+  footer { display: flex; flex-wrap: wrap; gap: 12px; justify-content: space-between; align-items: center; padding-top: 36px; padding-bottom: 36px; border-top: 1px solid var(--line); font-size: 13px; color: var(--muted); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .person { transition-duration: 0.01s !important; transition-delay: 0s !important; }
+    .walker, .limb { animation: none !important; }
+    .zone, .info, .detail { animation: none !important; transition-duration: 0.01s !important; }
+    .jumper, .ripple, .bubble { animation: none !important; }
+    .av:hover .raiser, .av:focus-visible .raiser, .person.clicked .raiser { transform: rotate(-158deg); transition: none; }
+    .waver { animation: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<header class="nav pad">
+  <span class="brand">Sample volunteer program</span>
+  <span class="muted" style="font-size:13px;">Fictional sample data</span>
+</header>
+
+<section class="intro pad">
+  <div class="intro-text">
+    <h1>The Volunteer Room</h1>
+    <p>Choose how to split the group and watch 24 volunteers walk to their spot. Then pick something volunteers asked for to see who raised it, on its own or within each group. Click anyone to read what they said. Every name, quote, opportunity and theme on this page is fictional.</p>
+  </div>
+  <div class="stat"><div class="stat-n" id="total">24</div><div class="stat-l">sample<br>volunteers</div></div>
+</section>
+
+<section class="filters pad" aria-label="Filters">
+  <div>
+    <div class="set-label" id="lblGroup">Group the room by</div>
+    <div class="row" id="groupRow" role="group" aria-labelledby="lblGroup">
+      <button class="btn" data-group="none" aria-pressed="true">All together</button>
+      <button class="btn" data-group="tenure" aria-pressed="false">Tenure</button>
+      <button class="btn" data-group="shift" aria-pressed="false">Shift</button>
+      <button class="btn" data-group="segment" aria-pressed="false">Segment</button>
+      <button class="btn" data-group="motivation" aria-pressed="false">Why they joined</button>
+    </div>
+  </div>
+  <div>
+    <div class="set-label" id="lblOpp">Filter by opportunity <span class="set-hint">(click again to clear)</span></div>
+    <div class="row" id="oppRow" role="group" aria-labelledby="lblOpp"></div>
+  </div>
+  <div>
+    <div class="set-label" id="lblRec">Filter by recurring theme <span class="set-hint">(click again to clear; combine with an opportunity to see who raised both)</span></div>
+    <div class="row" id="recRow" role="group" aria-labelledby="lblRec"></div>
+  </div>
+</section>
+
+<section class="status pad" aria-live="polite">
+  <div class="status-t" id="statusT"></div>
+  <div class="status-s" id="statusS"></div>
+</section>
+
+<section class="infos pad" id="infos"></section>
+
+<section class="roomwrap pad">
+  <div class="roomfit" id="fit"><div class="stage" id="stage"></div></div>
+</section>
+
+<div class="pad detail-wrap"><div id="detail"></div></div>
+
+<footer class="pad">
+  <span>Sample data &middot; All names, quotes, opportunities and themes are fictional &middot; Figures are illustrative, not likenesses</span>
+</footer>
+
+<script>
+function ctlRoster() {
+  // All names, quotes, opportunities and themes below are fictional sample data.
+  const OPPS = {
+    training: { label: 'Refresher workshops', desc: 'Short refresher workshops after onboarding' },
+    search: { label: 'Better handbook search', desc: 'A handbook search that finds what people mean' },
+    swaps: { label: 'Easier shift swaps', desc: 'A simple way to trade shifts' },
+    meetups: { label: 'Regular meetups', desc: 'Regular meetups, in person or online' },
+    recognize: { label: 'Milestone recognition', desc: 'Personal thank-yous at milestones' },
+    mentor: { label: 'Mentor pairing', desc: 'A buddy for the first few weeks' },
+    feedback: { label: 'Regular check-ins', desc: 'Predictable check-ins and feedback' },
+    reminders: { label: 'Customizable reminders', desc: 'Shift reminders people can customize and snooze' },
+    quiet: { label: 'Quieter group chat', desc: 'Separate channels so questions don\u2019t get buried' },
+    stats: { label: 'Seeing our impact', desc: 'A shared view of what everyone\u2019s hours add up to' }
+  };
+  const OPINFO = {
+    training: 'Sample volunteers would like short, practical workshops every few months after onboarding, focused on one topic at a time rather than long lectures.',
+    search: 'Sample volunteers say the handbook has what they need but is hard to search. They want results that match what they mean, not only the exact words they type.',
+    swaps: 'Sample volunteers want to trade shifts with each other directly, without a chain of messages to a coordinator.',
+    meetups: 'Sample volunteers would like regular chances to meet each other, in person where possible and online otherwise, for connection and to swap tips.',
+    recognize: 'Sample volunteers would value a short, personal thank-you when they reach a tenure or hours milestone.',
+    mentor: 'Sample volunteers want to be paired with a buddy for their first few weeks, so there is one person to ask when something feels unclear.',
+    feedback: 'Sample volunteers would like predictable check-ins and feedback from coordinators, not only when something goes wrong.',
+    reminders: 'Sample volunteers want shift reminders that respect their time zone and can be snoozed or customized.',
+    quiet: 'Sample volunteers want urgent questions separated from social chatter, so a real question doesn\u2019t get lost in a busy group chat.',
+    stats: 'Sample volunteers would like a simple view of what everyone\u2019s hours add up to across the whole program.'
+  };
+  const RECUR = {
+    onboarding: { label: 'A smoother start', desc: 'A smoother start for new volunteers', info: 'Across the sample interviews, newer volunteers describe wanting more support in their first weeks: a buddy to ask, and practical training beyond the basics.' },
+    learning: { label: 'Ongoing learning', desc: 'Ongoing learning after onboarding', info: 'Sample volunteers want to keep learning after onboarding, and to find the answers they need quickly when they need them.' },
+    connection: { label: 'Community & connection', desc: 'Community and connection between volunteers', info: 'Sample volunteers of many tenures describe wanting to know each other better, whether through meetups, a calmer group chat, or a buddy.' },
+    appreciation: { label: 'Feeling appreciated', desc: 'Feeling appreciated and seeing impact', info: 'Sample volunteers describe small signs of appreciation, such as a thank-you, a check-in, or seeing the shared total, as what keeps them showing up.' },
+    flexibility: { label: 'Scheduling flexibility', desc: 'Scheduling that bends around real life', info: 'Sample volunteers want scheduling that bends around changing weeks: easy swaps and reminders that work with their time zone.' }
+  };
+  const LABELS = { '<3mo': 'Under 3 months', '3-6mo': '3\u20136 months', '6-12mo': '6\u201312 months', '1-2yr': '1\u20132 years', '2+yr': '2+ years',
+    personal: 'Giving back', career: 'Career exploration', pro: 'Building skills', retire: 'Meeting people', chance: 'A friend\u2019s invitation', none: 'Not recorded yet' };
+  const MOTFULL = { personal: 'Giving back to the community', career: 'Exploring a new career path', pro: 'Building new skills', retire: 'Meeting new people', chance: 'Invited by a friend' };
+  const PRIORITY = ['chance', 'retire', 'personal', 'career', 'pro'];
+
+  // id, name, tenure, shift, segment, quote, opportunity tags, motivations
+  const P = [
+    ['marisol-t', 'Marisol T.', '3-6mo', 'Evening', 'Weekday Regulars', "I signed up on a whim, and now Tuesday evenings are the part of my week I protect.", ['training', 'search'], ['personal']],
+    ['devon-p', 'Devon P.', '2+yr', 'Day/Morning', 'Weekday Regulars', "Swapping a shift shouldn't take five messages and a prayer.", ['swaps', 'reminders'], ['pro']],
+    ['priya-n', 'Priya N.', '<3mo', 'Day/Morning', 'Weekday Regulars', "The first time someone remembered my name at a meetup, I knew I'd stay.", ['meetups', 'recognize'], ['retire']],
+    ['anders-l', 'Anders L.', '1-2yr', 'Evening', 'Weekday Regulars', "I'd love a short workshop every few months. Not a lecture, just practice.", ['training', 'feedback'], ['career']],
+    ['imani-r', 'Imani R.', '<3mo', 'Night', 'Evening Owls', "My buddy answered every silly question in week one. I want to do that for someone else.", ['mentor', 'meetups'], ['chance']],
+    ['theo-w', 'Theo W.', '6-12mo', 'Day/Morning', 'Weekday Regulars', "I know the answer is in the handbook somewhere. Finding it is the hard part.", ['search', 'stats'], ['pro']],
+    ['noor-k', 'Noor K.', '3-6mo', 'Night', 'Evening Owls', "When the group chat is a wall of memes, the one real question gets lost.", ['swaps', 'quiet'], []],
+    ['callum-b', 'Callum B.', '<3mo', 'Day/Morning', 'Weekday Regulars', "Training taught me the steps. Shadowing someone showed me how it feels.", ['training', 'mentor'], ['career', 'pro']],
+    ['lucia-f', 'Lucia F.', '2+yr', 'Day/Morning', 'Weekday Regulars', "A two-line thank-you from a coordinator can carry me through a whole month.", ['recognize', 'feedback'], ['personal']],
+    ['bao-h', 'Bao H.', '6-12mo', 'Night', 'Evening Owls', "Reminders that arrive at 3 a.m. my time are reminders to mute the app.", ['search', 'reminders'], []],
+    ['odette-m', 'Odette M.', '1-2yr', 'Night', 'Evening Owls', "I joined for the cause and stayed for the people I met.", ['meetups', 'quiet'], ['retire', 'personal']],
+    ['rafael-s', 'Rafael S.', '3-6mo', 'Evening', 'Weekend Drop-ins', "Life changes weekly. I need the schedule to bend with it.", ['swaps', 'training'], ['pro']],
+    ['hana-y', 'Hana Y.', '<3mo', 'Day/Morning', 'Weekday Regulars', "In my first month I wished I had one person to text and ask, is this normal?", ['mentor', 'search'], ['chance', 'retire']],
+    ['gideon-c', 'Gideon C.', '2+yr', 'Day/Morning', 'Weekday Regulars', "Tell me how I'm doing before I have to guess. I'd rather hear it early.", ['feedback', 'stats'], []],
+    ['mirela-d', 'Mirela D.', '1-2yr', 'Evening', 'Weekday Regulars', "We hit a milestone and nothing happened. A tiny celebration would have meant a lot.", ['recognize', 'meetups'], ['personal']],
+    ['tobias-a', 'Tobias A.', '2+yr', 'Day/Morning', 'Weekday Regulars', "I keep a notebook of tips. I'd happily trade it for a good refresher session.", ['training', 'swaps'], ['career']],
+    ['yara-e', 'Yara E.', '3-6mo', 'Night', 'Weekend Drop-ins', "Search results should find what I mean, not just what I typed.", ['search', 'quiet'], ['retire']],
+    ['silas-g', 'Silas G.', '6-12mo', 'Night', 'Evening Owls', "Give me one reminder I can customize and I'll show up every time.", ['reminders', 'feedback'], []],
+    ['esme-j', 'Esme J.', '<3mo', 'Day/Morning', 'Weekday Regulars', "Being new is easier when someone says, glad you're here.", ['mentor', 'recognize'], ['personal']],
+    ['kofi-o', 'Kofi O.', '1-2yr', 'Night', 'Weekend Drop-ins', "Meeting in person once changed how I feel about the whole team.", ['meetups', 'training'], ['pro', 'career']],
+    ['ingrid-v', 'Ingrid V.', '6-12mo', 'Day/Morning', 'Weekday Regulars', "I'd love to see where all our hours add up. It's probably more than we think.", ['search', 'stats'], ['personal']],
+    ['anjali-q', 'Anjali Q.', '2+yr', 'Day/Morning', 'Weekday Regulars', "Feedback only when something goes wrong makes everyone braced for bad news.", ['swaps', 'feedback'], ['career']],
+    ['mateo-u', 'Mateo U.', '<3mo', 'Evening', 'Weekend Drop-ins', "I'd do another round of training tomorrow if it meant I felt more ready.", ['training', 'recognize'], ['pro']],
+    ['freya-z', 'Freya Z.', '<3mo', 'Night', 'Evening Owls', "A friendly reminder and a buddy for the first weeks would have made my start much smoother.", ['reminders', 'mentor'], ['retire']]
+  ];
+  const raw = P.map((r) => ({
+    id: r[0], name: r[1], tenureBucket: r[2], shiftBucket: r[3], segment: r[4], quote: r[5],
+    opTags: r[6], mot: r[7],
+    opps: r[6].map((t) => ({ v: OPPS[t].desc, th: null }))
+  }));
+  const RULES = {
+    onboarding: ['mentor', 'training'], learning: ['training', 'search'], connection: ['meetups', 'quiet', 'mentor'],
+    appreciation: ['recognize', 'stats', 'feedback'], flexibility: ['swaps', 'reminders']
+  };
+  raw.forEach((p) => {
+    p.primaryMot = PRIORITY.find((m) => p.mot.indexOf(m) >= 0) || 'none';
+    p.rtTags = Object.keys(RULES).filter((id) => p.opTags.some((t) => RULES[id].indexOf(t) >= 0));
+  });
+  return { raw, OPPS, OPINFO, RECUR, LABELS, MOTFULL };
+}
+
+  (function () {
+  'use strict';
+  var D = ctlRoster();
+  // Chip counts come from the same tags that drive the highlighting, so they always agree.
+  Object.keys(D.OPPS).forEach(function (id) { D.OPPS[id].m = D.raw.filter(function (p) { return p.opTags.indexOf(id) >= 0; }).length; });
+  Object.keys(D.RECUR).forEach(function (id) { D.RECUR[id].m = D.raw.filter(function (p) { return p.rtTags.indexOf(id) >= 0; }).length; });
+
+  // Typographic punctuation for everything people read
+  function typo(s) {
+    return String(s)
+      .replace(/(\w)'(\w)/g, '$1\u2019$2')
+      .replace(/(^|[\s(\u2014])'/g, '$1\u2018')
+      .replace(/'/g, '\u2019')
+      .replace(/(^|[\s(\u2014])"/g, '$1\u201c')
+      .replace(/"/g, '\u201d');
+  }
+  D.raw.forEach(function (p) {
+    p.quote = typo(p.quote);
+    p.opps.forEach(function (o) { o.v = typo(o.v); });
+  });
+  Object.keys(D.OPINFO).forEach(function (k) { D.OPINFO[k] = typo(D.OPINFO[k]); });
+  Object.keys(D.OPPS).forEach(function (k) { D.OPPS[k].desc = typo(D.OPPS[k].desc); });
+  Object.keys(D.RECUR).forEach(function (k) { D.RECUR[k].desc = typo(D.RECUR[k].desc); D.RECUR[k].info = typo(D.RECUR[k].info); });
+
+  function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+
+  var W = 1296, H = 660, PAD = 24, GAP = 24, SW = 84, SH = 104, LABEL_H = 44;
+
+  var DIMS = {
+    tenure: { key: 'tenureBucket', title: 'tenure at interview', order: ['<3mo', '3-6mo', '6-12mo', '1-2yr', '2+yr'], col: { '<3mo': 'PLUM', '3-6mo': 'RED', '6-12mo': 'YEL', '1-2yr': 'TEAL', '2+yr': 'NAVY' } },
+    shift: { key: 'shiftBucket', title: 'shift', order: ['Night', 'Day/Morning', 'Evening'], col: { 'Night': 'TEAL', 'Day/Morning': 'RED', 'Evening': 'YEL' } },
+    segment: { key: 'segment', title: 'segment', order: ['Weekday Regulars', 'Evening Owls', 'Weekend Drop-ins'], col: { 'Weekday Regulars': 'RED', 'Evening Owls': 'TEAL', 'Weekend Drop-ins': 'YEL' } },
+    motivation: { key: 'primaryMot', title: 'motivation for joining', order: ['personal', 'career', 'pro', 'retire', 'chance', 'none'], col: { personal: 'RED', career: 'YEL', pro: 'TEAL', retire: 'NAVY', chance: 'PLUM', none: 'NEUTRAL' } }
+  };
+
+  function isDark() {
+    var t = document.documentElement.getAttribute('data-theme');
+    if (t === 'dark') { return true; }
+    if (t === 'light') { return false; }
+    return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  }
+  function pal() {
+    var d = isDark();
+    return { RED: '#ef3346', YEL: '#ffc600', TEAL: d ? '#4aa3b8' : '#2b7a8c', NAVY: d ? '#9fb2bd' : '#253746', NEUTRAL: d ? '#8aa2ab' : '#6f8a93', PLUM: d ? '#b58bd0' : '#8a5aa0' };
+  }
+
+  function hash(s) { var h = 0; for (var i = 0; i < s.length; i++) { h = (h * 31 + s.charCodeAt(i)) >>> 0; } return h; }
+  function look(id) {
+    var h = hash(id);
+    var skins = ['#f3cfae', '#e6b48a', '#c98f62', '#a96d45', '#7c4d2e', '#5b3722'];
+    var hairs = ['#2b2118', '#4a3322', '#7a5230', '#b5832f', '#8f949a', '#1c1c1f'];
+    var pants = ['#3f5360', '#5d6f7b', '#7c6f63', '#4a4e69'];
+    var style = (h >>> 6) % 4;
+    return { skin: skins[h % 6], hair: hairs[(h >>> 3) % 6], pants: pants[(h >>> 9) % 4],
+      hLong: style === 1 ? 'inline' : 'none', hBun: style === 2 ? 'inline' : 'none', hCurl: style === 3 ? 'inline' : 'none' };
+  }
+
+  function figure(l, shirt) {
+    var sl = 'fill="' + shirt + '" data-shirt stroke="rgba(37,55,70,0.28)" stroke-width="0.6"';
+    return '<svg viewBox="0 0 40 70" width="40" height="70" aria-hidden="true" style="display:block;overflow:visible">' +
+      '<g class="limb" data-s="1" data-p="legL"><rect x="11" y="40" width="8" height="25" rx="4" fill="' + l.pants + '"/><ellipse cx="14.6" cy="65.6" rx="5" ry="2.6" fill="#1d2a33"/></g>' +
+      '<g class="limb" data-s="2" data-p="legR"><rect x="21" y="40" width="8" height="25" rx="4" fill="' + l.pants + '"/><ellipse cx="25.4" cy="65.6" rx="5" ry="2.6" fill="#1d2a33"/></g>' +
+      '<rect x="9.5" y="19.5" width="21" height="26" rx="8" fill="' + shirt + '" data-shirt/>' +
+      '<g class="limb" data-s="2" data-p="armL"><rect x="3.5" y="20.5" width="6.5" height="21" rx="3.2" ' + sl + '/><circle cx="6.75" cy="42.6" r="3" fill="' + l.skin + '"/></g>' +
+      '<g class="raiser"><g class="waver"><g class="limb" data-s="1" data-p="armR"><rect x="30" y="20.5" width="6.5" height="21" rx="3.2" ' + sl + '/><circle cx="33.25" cy="42.6" r="3" fill="' + l.skin + '"/></g></g></g>' +
+      '<rect x="17" y="15" width="6" height="6" fill="' + l.skin + '"/>' +
+      '<rect x="10.8" y="7" width="4.2" height="15" rx="2.1" fill="' + l.hair + '" style="display:' + l.hLong + '"/>' +
+      '<rect x="25" y="7" width="4.2" height="15" rx="2.1" fill="' + l.hair + '" style="display:' + l.hLong + '"/>' +
+      '<circle cx="20" cy="10.5" r="8.5" fill="' + l.skin + '"/>' +
+      '<circle cx="16.8" cy="10.8" r="0.95" fill="#253746"/><circle cx="23.2" cy="10.8" r="0.95" fill="#253746"/>' +
+      '<path d="M17.6 14.2 Q20 16.2 22.4 14.2" fill="none" stroke="#253746" stroke-width="0.9" stroke-linecap="round"/>' +
+      '<circle cx="20" cy="1.6" r="3.6" fill="' + l.hair + '" style="display:' + l.hBun + '"/>' +
+      '<g fill="' + l.hair + '" style="display:' + l.hCurl + '"><circle cx="11.6" cy="8" r="3.3"/><circle cx="13.5" cy="3.8" r="3.3"/><circle cx="20" cy="1.8" r="3.3"/><circle cx="26.5" cy="3.8" r="3.3"/><circle cx="28.4" cy="8" r="3.3"/></g>' +
+      '<path d="M11.4 10 C10.6 4 14.5 1 20 1 S29.4 4 28.6 10 C26.5 6.8 13.5 6.8 11.4 10Z" fill="' + l.hair + '"/></svg>';
+  }
+
+  // ---------- state ----------
+  var group = 'none', key = null, prevGroup = 'none', prevKey = null, moves = 0, selectedId = null;
+
+  function parts() { var p = key ? key.split('|') : ['', '']; return { rec: p[0] || '', opp: p[1] || '' }; }
+  function raised(p, k) {
+    if (!k) { return false; }
+    var a = k.split('|');
+    var hr = !a[0] || p.rtTags.indexOf(a[0]) >= 0;
+    var ho = !a[1] || p.opTags.indexOf(a[1]) >= 0;
+    return hr && ho;
+  }
+
+  // ---------- zones + layout ----------
+  function zoneOf(dimName, val, x, y, w, h, k, P) {
+    var dim = DIMS[dimName];
+    var members = D.raw.filter(function (p) { return p[dim.key] === val; });
+    var yes = members.filter(function (p) { return raised(p, k); });
+    var no = members.filter(function (p) { return !raised(p, k); });
+    var ordered = k ? yes.concat(no) : members;
+    var c = P[dim.col[val]];
+    return { label: D.LABELS[val] || val, labeled: true, x: x, y: y, w: w, h: h, fill: c + '1f', border: c + '99',
+      ids: ordered.map(function (p) { return p.id; }), countText: k ? yes.length + ' of ' + members.length + ' raised' : String(members.length) };
+  }
+  function zonesFor(g, k) {
+    var P = pal(), fullH = H - PAD * 2, w, h;
+    if (g === 'tenure') {
+      h = (fullH - GAP) / 2;
+      var wTop = (W - PAD * 2 - GAP * 2) / 3, wBot = (W - PAD * 2 - GAP) / 2;
+      var spots = [[PAD, PAD, wTop], [PAD + wTop + GAP, PAD, wTop], [PAD + (wTop + GAP) * 2, PAD, wTop], [PAD, PAD + h + GAP, wBot], [PAD + wBot + GAP, PAD + h + GAP, wBot]];
+      return DIMS.tenure.order.map(function (v, i) { return zoneOf('tenure', v, spots[i][0], spots[i][1], spots[i][2], h, k, P); });
+    }
+    if (g === 'shift') {
+      w = (W - PAD * 2 - GAP * 2) / 3;
+      return DIMS.shift.order.map(function (v, i) { return zoneOf('shift', v, PAD + i * (w + GAP), PAD, w, fullH, k, P); });
+    }
+    if (g === 'segment') {
+      var leftW = 760, rx = PAD + leftW + GAP, rw = W - PAD - rx; h = (fullH - GAP) / 2;
+      return [zoneOf('segment', 'Weekday Regulars', PAD, PAD, leftW, fullH, k, P),
+        zoneOf('segment', 'Evening Owls', rx, PAD, rw, h, k, P),
+        zoneOf('segment', 'Weekend Drop-ins', rx, PAD + h + GAP, rw, h, k, P)];
+    }
+    if (g === 'motivation') {
+      w = (W - PAD * 2 - GAP * 2) / 3; h = (fullH - GAP) / 2;
+      return DIMS.motivation.order.map(function (v, i) { return zoneOf('motivation', v, PAD + (i % 3) * (w + GAP), PAD + Math.floor(i / 3) * (h + GAP), w, h, k, P); });
+    }
+    if (k) {
+      w = (W - PAD * 2 - GAP) / 2;
+      var yes = D.raw.filter(function (p) { return raised(p, k); }).map(function (p) { return p.id; });
+      var no = D.raw.filter(function (p) { return !raised(p, k); }).map(function (p) { return p.id; });
+      return [
+        { label: 'Raised this', labeled: true, x: PAD, y: PAD, w: w, h: fullH, fill: P.RED + '1f', border: P.RED + '99', ids: yes, countText: String(yes.length) },
+        { label: 'Did not raise it', labeled: true, x: PAD + w + GAP, y: PAD, w: w, h: fullH, fill: P.NEUTRAL + '1f', border: P.NEUTRAL + '88', ids: no, countText: String(no.length) }
+      ];
+    }
+    return [{ label: '', labeled: false, x: PAD, y: PAD, w: W - PAD * 2, h: fullH, fill: P.NEUTRAL + '14', border: P.NEUTRAL + '44', ids: D.raw.map(function (p) { return p.id; }), countText: '24' }];
+  }
+  function layoutFor(g, k) {
+    var zones = zonesFor(g, k), pos = {};
+    zones.forEach(function (z) {
+      var n = z.ids.length, topPad = z.labeled ? LABEL_H : 0, innerH = z.h - topPad - 12;
+      var maxCols = Math.max(1, Math.floor((z.w - 16) / SW));
+      var cols = Math.min(maxCols, Math.max(1, Math.ceil(Math.sqrt(n * (z.w / innerH)))));
+      while (Math.ceil(n / cols) * SH > innerH && cols < maxCols) { cols++; }
+      var rows = Math.max(1, Math.ceil(n / cols));
+      z.ids.forEach(function (id, i) {
+        var r = Math.floor(i / cols), c = i % cols, inRow = r === rows - 1 ? n - r * cols : cols, h = hash(id);
+        pos[id] = { x: z.x + (z.w - cols * SW) / 2 + ((cols - inRow) * SW) / 2 + c * SW + ((h % 15) - 7),
+          y: z.y + topPad + (innerH - rows * SH) / 2 + r * SH + (((h >>> 4) % 9) - 4) };
+      });
+    });
+    return { zones: zones, pos: pos };
+  }
+
+  // ---------- build DOM once ----------
+  var stage = document.getElementById('stage');
+  var nodes = {};
+  D.raw.forEach(function (p) {
+    var l = look(p.id);
+    var el = document.createElement('div');
+    el.className = 'person';
+    el.innerHTML = '<div class="shadow" aria-hidden="true"></div><div class="ripple" aria-hidden="true"></div>' +
+      '<div class="bubble" aria-hidden="true"><i></i><i></i><i></i></div>' +
+      '<button class="av" type="button" aria-label="View ' + esc(p.name) + '"><span class="walker"><span class="jumper">' + figure(l, '#6f8a93') + '</span></span></button>' +
+      '<div class="name">' + esc(p.name) + '</div>';
+    el.querySelector('.av').addEventListener('click', function () { selectedId = p.id; clickAnim(p.id); renderDetail(); paintRings(); });
+    stage.appendChild(el);
+    nodes[p.id] = { el: el, walker: el.querySelector('.walker'), av: el.querySelector('.av'),
+      s1: Array.prototype.slice.call(el.querySelectorAll('[data-p="legL"]')), s2: Array.prototype.slice.call(el.querySelectorAll('[data-p="legR"]')),
+      a1: Array.prototype.slice.call(el.querySelectorAll('[data-p="armR"]')), a2: Array.prototype.slice.call(el.querySelectorAll('[data-p="armL"]')),
+      shirts: Array.prototype.slice.call(el.querySelectorAll('[data-shirt]')), arm: el.querySelector('[data-p="armR"]') };
+  });
+  var zoneEls = [];
+  var lastPos = {}, agents = {};
+  D.raw.forEach(function (p) { agents[p.id] = { state: 'rest', until: Infinity, par: 0, side: 0, chatEnd: 0 }; });
+
+  function chipRow(rowId, defs, field) {
+    var row = document.getElementById(rowId);
+    Object.keys(defs).sort(function (a, b) { return defs[b].m - defs[a].m; }).forEach(function (id) {
+      var b = document.createElement('button');
+      b.type = 'button'; b.className = 'chip'; b.setAttribute('aria-pressed', 'false');
+      b.setAttribute('data-field', field); b.setAttribute('data-id', id);
+      b.innerHTML = '<span>' + esc(defs[id].label) + '</span><span class="chip-n">' + defs[id].m + '</span>';
+      b.addEventListener('click', function () {
+        var cur = parts();
+        var on = (field === 'rt' ? cur.rec : cur.opp) === id;
+        var r = field === 'rt' ? (on ? '' : id) : cur.rec;
+        var o = field === 'op' ? (on ? '' : id) : cur.opp;
+        go(group, (r || o) ? r + '|' + o : null);
+      });
+      row.appendChild(b);
+    });
+  }
+  chipRow('oppRow', D.OPPS, 'op');
+  chipRow('recRow', D.RECUR, 'rt');
+  Array.prototype.forEach.call(document.querySelectorAll('#groupRow .btn'), function (b) {
+    b.addEventListener('click', function () { go(b.getAttribute('data-group'), key); });
+  });
+
+  function go(g, k) {
+    var nk = k || null;
+    if (g === group && nk === key) { return; }
+    prevGroup = group; prevKey = key; group = g; key = nk; moves++;
+    update();
+  }
+
+  // ---------- paint ----------
+  function paintFilters() {
+    Array.prototype.forEach.call(document.querySelectorAll('#groupRow .btn'), function (b) {
+      b.setAttribute('aria-pressed', b.getAttribute('data-group') === group ? 'true' : 'false');
+    });
+    var c = parts();
+    Array.prototype.forEach.call(document.querySelectorAll('.chip'), function (b) {
+      var f = b.getAttribute('data-field'), id = b.getAttribute('data-id');
+      b.setAttribute('aria-pressed', (f === 'rt' ? c.rec : c.opp) === id ? 'true' : 'false');
+    });
+  }
+
+  function paintStatus() {
+    var c = parts(), t = 'All together', s = D.raw.length + ' volunteers mingling in one room. Pick a way to group them, or pick an opportunity or theme below.';
+    var gTitle = group === 'none' ? '' : DIMS[group].title;
+    if (!key && group !== 'none') { t = 'By ' + gTitle; s = 'Click anyone to read what they told us.'; }
+    if (key) {
+      var names = [];
+      if (c.opp) { names.push(D.OPPS[c.opp].label); }
+      if (c.rec) { names.push(D.RECUR[c.rec].label); }
+      var total = D.raw.filter(function (p) { return raised(p, key); }).length;
+      t = names.join(' + ') + (group === 'none' ? '' : ' by ' + gTitle);
+      var N = D.raw.length;
+      if (names.length === 1) {
+        var def = c.opp ? D.OPPS[c.opp] : D.RECUR[c.rec];
+        s = total + ' of ' + N + ' volunteers raised this. Faded figures didn\u2019t.';
+      } else {
+        s = total + ' of ' + N + ' volunteers raised both. Faded figures didn\u2019t.';
+      }
+    }
+    if (group === 'motivation') {
+      var untagged = D.raw.filter(function (p) { return p.primaryMot === 'none'; }).length;
+      s += ' Each person stands in their most specific motivation. ' + untagged + ' volunteers have no motivation recorded yet.';
+    }
+    document.getElementById('statusT').textContent = t;
+    document.getElementById('statusS').textContent = s;
+  }
+
+  function paintInfos() {
+    var c = parts(), html = '';
+    function card(kind, count, title, text) {
+      return '<div class="info"><div class="info-k">' + esc(kind) + ' \u00b7 ' + esc(count) + '</div><div class="info-t">' + esc(title) + '</div>' +
+        (text ? '<p>' + esc(text) + '</p>' : '') + '</div>';
+    }
+    if (c.opp) { html += card('Opportunity', D.OPPS[c.opp].m + ' of ' + D.raw.length, D.OPPS[c.opp].desc, D.OPINFO[c.opp]); }
+    if (c.rec) { html += card('Recurring theme', D.RECUR[c.rec].m + ' of ' + D.raw.length, D.RECUR[c.rec].desc, D.RECUR[c.rec].info); }
+    document.getElementById('infos').innerHTML = html;
+    document.getElementById('infos').style.display = html ? 'flex' : 'none';
+  }
+
+  function paintZones(zones) {
+    zones.forEach(function (z, i) {
+      var el = zoneEls[i];
+      if (!el) {
+        el = document.createElement('div'); el.className = 'zone';
+        stage.insertBefore(el, nodes[D.raw[0].id].el);
+        zoneEls[i] = el;
+      }
+      el.style.left = z.x + 'px'; el.style.top = z.y + 'px'; el.style.width = z.w + 'px'; el.style.height = z.h + 'px';
+      el.style.backgroundColor = z.fill; el.style.borderColor = z.border;
+      el.innerHTML = z.labeled ? '<div class="zone-label">' + esc(z.label) + ' <span class="zone-count">\u00b7 ' + esc(z.countText) + '</span></div>' : '';
+    });
+    while (zoneEls.length > zones.length) { var x = zoneEls.pop(); x.parentNode.removeChild(x); }
+  }
+
+  function paintRings() {
+    D.raw.forEach(function (p) {
+      nodes[p.id].av.style.boxShadow = p.id === selectedId ? '0 0 0 3px var(--ring-gap), 0 0 0 6px var(--ring)' : 'none';
+    });
+  }
+
+  function shirtFor(p, P) {
+    if (group === 'none') { return key && raised(p, key) ? P.RED : P.NEUTRAL; }
+    return P[DIMS[group].col[p[DIMS[group].key]]];
+  }
+
+  function update() {
+    var P = pal();
+    var cur = layoutFor(group, key), prev = layoutFor(prevGroup, prevKey);
+    var par = moves % 2 === 0 ? 'A' : 'B';
+    paintZones(cur.zones);
+    D.raw.forEach(function (p) {
+      var n = nodes[p.id], a = lastPos[p.id] || prev.pos[p.id], b = cur.pos[p.id];
+      var dist = Math.sqrt(Math.pow(b.x - a.x, 2) + Math.pow(b.y - a.y, 2));
+      var moved = moves > 0 && dist > 2;
+      var dur = moved ? Math.min(3, Math.max(0.8, dist / 300)) : 0.8;
+      var delay = ((hash(p.id) % 7) * 0.05).toFixed(2), iters = Math.ceil(dur / 0.56);
+      n.el.style.transition = 'left ' + dur.toFixed(2) + 's cubic-bezier(0.55,0,0.3,1) ' + delay + 's, top ' + (dur * 0.9).toFixed(2) + 's cubic-bezier(0.3,0,0.55,1) ' + delay + 's';
+      n.el.style.left = Math.round(b.x) + 'px'; n.el.style.top = Math.round(b.y) + 'px'; n.el.style.zIndex = String(Math.round(b.y));
+      lastPos[p.id] = { x: Math.round(b.x), y: Math.round(b.y) };
+      var ag = agents[p.id];
+      ag.state = 'rest';
+      n.el.classList.remove('talking', 'b2');
+      ag.until = (group === 'none' && !key) ? Date.now() + ((moved ? dur : 0) + parseFloat(delay)) * 1000 + 1200 + Math.random() * 3500 : Infinity;
+      var base = ' 0.56s ease-in-out ' + delay + 's ' + iters + ' both';
+      n.walker.style.animation = moved ? 'stepBob' + par + base : 'none';
+      n.s1.forEach(function (e) { e.style.animation = moved ? 'swing' + par + base : 'none'; });
+      n.s2.forEach(function (e) { e.style.animation = moved ? 'swingO' + par + base : 'none'; });
+      n.a1.forEach(function (e) { e.style.animation = moved ? 'arm' + par + base : 'none'; });
+      n.a2.forEach(function (e) { e.style.animation = moved ? 'armO' + par + base : 'none'; });
+      var faded = !!key && !raised(p, key);
+      n.walker.style.opacity = faded ? '0.5' : '1';
+      n.walker.style.filter = faded ? 'grayscale(1)' : 'none';
+      var shirt = shirtFor(p, P);
+      n.shirts.forEach(function (e) { e.setAttribute('fill', shirt); });
+    });
+    paintFilters(); paintStatus(); paintInfos(); paintRings(); renderDetail();
+  }
+
+  function renderDetail() {
+    var box = document.getElementById('detail');
+    var p = D.raw.filter(function (x) { return x.id === selectedId; })[0];
+    if (!p) { box.innerHTML = ''; return; }
+    var P = pal(), c = parts();
+    var segCol = P[DIMS.segment.col[p.segment]];
+    var joined = p.mot.length ? p.mot.map(function (m) { return D.MOTFULL[m]; }).join(' \u00b7 ') : 'Not recorded yet';
+    var opps = p.opps.map(function (o) {
+      var hit = false;
+      return '<div class="opp' + (hit ? ' hit' : '') + '"><i aria-hidden="true"></i><span>' + esc(o.v) + '</span></div>';
+    }).join('');
+    function pills(ids, defs, active) {
+      return ids.map(function (id) { return '<span class="pill' + (id === active ? ' hit' : '') + '">' + esc(defs[id].label) + '</span>'; }).join('');
+    }
+    var fig = figure(look(p.id), segCol).replace('width="40" height="70"', 'width="46" height="80"');
+    box.innerHTML = '<div class="detail"><button class="close" type="button" aria-label="Close" id="closeDetail">\u00d7</button>' +
+      '<div class="who">' + fig + '<div><div class="who-n">' + esc(p.name) + '</div>' +
+      '<div class="who-m">' + esc(p.segment) + '<br>' + esc(D.LABELS[p.tenureBucket]) + ' \u00b7 ' + esc(p.shiftBucket) + '</div>' +
+      '<div class="who-j"><strong>Joined for:</strong> ' + esc(joined) + '</div></div></div>' +
+      '<div class="quote"><p>\u201c' + esc(p.quote) + '\u201d</p></div>' +
+      '<div class="opps"><div class="opps-h">What they\u2019d like to see</div>' + opps +
+      '<div class="opps-h" style="margin-top:14px;">Opportunities they raised</div><div class="pills">' + pills(p.opTags, D.OPPS, c.opp) + '</div>' +
+      '<div class="opps-h" style="margin-top:12px;">Recurring themes they raised</div><div class="pills">' + pills(p.rtTags, D.RECUR, c.rec) + '</div>' +
+      '</div></div>';
+    document.getElementById('closeDetail').addEventListener('click', function () { selectedId = null; renderDetail(); paintRings(); });
+  }
+
+  // ---------- idle: people wander around and chat ----------
+  var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function isIdle() { return group === 'none' && !key; }
+  function rnd(a, b) { return a + Math.random() * (b - a); }
+  function clampPos(x, y) {
+    return { x: Math.max(PAD + 8, Math.min(W - PAD - SW - 8, x)), y: Math.max(PAD + 8, Math.min(H - PAD - SH - 8, y)) };
+  }
+
+  // Walk one person to a spot at a gentle pace; returns the walk time in ms
+  function walkTo(id, x, y) {
+    var n = nodes[id], ag = agents[id], from = lastPos[id], c = clampPos(x, y);
+    var dist = Math.sqrt(Math.pow(c.x - from.x, 2) + Math.pow(c.y - from.y, 2));
+    var dur = Math.max(0.8, dist / 70), iters = Math.ceil(dur / 0.56);
+    ag.par = ag.par ? 0 : 1;
+    var par = ag.par ? 'A' : 'B', base = ' 0.56s ease-in-out 0s ' + iters + ' both';
+    n.el.style.transition = 'left ' + dur.toFixed(2) + 's cubic-bezier(0.45,0,0.55,1), top ' + (dur * 0.95).toFixed(2) + 's cubic-bezier(0.45,0,0.55,1)';
+    n.el.style.left = Math.round(c.x) + 'px'; n.el.style.top = Math.round(c.y) + 'px'; n.el.style.zIndex = String(Math.round(c.y));
+    n.walker.style.animation = 'stepBob' + par + base;
+    n.s1.forEach(function (e) { e.style.animation = 'swing' + par + base; });
+    n.s2.forEach(function (e) { e.style.animation = 'swingO' + par + base; });
+    n.a1.forEach(function (e) { e.style.animation = 'arm' + par + base; });
+    n.a2.forEach(function (e) { e.style.animation = 'armO' + par + base; });
+    lastPos[id] = { x: Math.round(c.x), y: Math.round(c.y) };
+    return dur * 1000;
+  }
+
+  function startChat(a, b, now) {
+    var pa = lastPos[a.id], pb = lastPos[b.id];
+    var mx = (pa.x + pb.x) / 2 + rnd(-60, 60), my = (pa.y + pb.y) / 2 + rnd(-30, 30);
+    var left = pa.x <= pb.x ? a : b, right = left === a ? b : a;
+    var t1 = walkTo(left.id, mx - 42, my), t2 = walkTo(right.id, mx + 42, my + 4);
+    var arrive = now + Math.max(t1, t2) + 300, end = arrive + rnd(5000, 9000);
+    [left, right].forEach(function (p, i) {
+      var ag = agents[p.id];
+      ag.state = 'chatwalk'; ag.until = arrive; ag.chatEnd = end; ag.side = i;
+    });
+  }
+
+  function tick() {
+    if (!isIdle() || reduceMotion || document.hidden) { return; }
+    var now = Date.now();
+    D.raw.forEach(function (p) {
+      var ag = agents[p.id], n = nodes[p.id];
+      if (ag.state === 'walk' && now >= ag.until) { ag.state = 'rest'; ag.until = now + rnd(800, 2500); }
+      else if (ag.state === 'chatwalk' && now >= ag.until) {
+        ag.state = 'chat'; ag.until = ag.chatEnd;
+        n.el.classList.add('talking');
+        if (ag.side) { n.el.classList.add('b2'); }
+        n.arm.style.animation = 'talk 2.4s ease-in-out ' + (ag.side ? '-1.2s' : '0s') + ' infinite';
+      } else if (ag.state === 'chat' && now >= ag.until) {
+        n.el.classList.remove('talking', 'b2');
+        n.arm.style.animation = 'none';
+        ag.state = 'rest'; ag.until = now + rnd(1000, 3000);
+      }
+    });
+    var free = D.raw.filter(function (p) { return p.id !== selectedId && agents[p.id].state === 'rest' && now >= agents[p.id].until; });
+    free.sort(function () { return Math.random() - 0.5; });
+    var used = {};
+    free.forEach(function (p) {
+      if (used[p.id]) { return; }
+      var ag = agents[p.id];
+      if (Math.random() < 0.5) {
+        var me = lastPos[p.id], best = null, bd = 1e9;
+        free.forEach(function (q) {
+          if (q.id === p.id || used[q.id]) { return; }
+          var o = lastPos[q.id], d = Math.sqrt(Math.pow(o.x - me.x, 2) + Math.pow(o.y - me.y, 2));
+          if (d < bd) { bd = d; best = q; }
+        });
+        if (best && bd < 420) { startChat(p, best, now); used[p.id] = true; used[best.id] = true; return; }
+      }
+      if (Math.random() < 0.6) {
+        var t = walkTo(p.id, rnd(PAD + 10, W - PAD - SW - 10), rnd(PAD + 10, H - PAD - SH - 10));
+        ag.state = 'walk'; ag.until = now + t + 200;
+      } else {
+        ag.until = now + rnd(1200, 3500);
+      }
+    });
+  }
+  setInterval(tick, 500);
+
+  // Click: hop, wave and a ripple on the floor
+  function clickAnim(id) {
+    var el = nodes[id].el;
+    el.classList.remove('clicked'); void el.offsetWidth; el.classList.add('clicked');
+    setTimeout(function () { el.classList.remove('clicked'); }, 900);
+  }
+
+  // Recolour for light/dark without moving anyone
+  function repaint() {
+    var P = pal();
+    paintZones(layoutFor(group, key).zones);
+    D.raw.forEach(function (p) { var s = shirtFor(p, P); nodes[p.id].shirts.forEach(function (e) { e.setAttribute('fill', s); }); });
+    renderDetail();
+  }
+
+  // ---------- fit the room to the screen ----------
+  var fit = document.getElementById('fit');
+  function resize() {
+    var w = fit.parentNode.clientWidth - parseFloat(getComputedStyle(fit.parentNode).paddingLeft) - parseFloat(getComputedStyle(fit.parentNode).paddingRight);
+    var s = Math.min(1, w / W);
+    fit.style.width = (W * s) + 'px'; fit.style.height = (H * s) + 'px';
+    stage.style.transform = 'scale(' + s + ')';
+  }
+  window.addEventListener('resize', resize);
+
+  document.getElementById('total').textContent = String(D.raw.length);
+  update(); resize();
+
+  // repaint colours when light/dark changes
+  if (window.matchMedia) { window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', repaint); }
+  new MutationObserver(repaint).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+})();
+</script>
+</body>
+</html>
